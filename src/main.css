@@ -1,0 +1,8 @@
+.hero {
+	width: 100px;
+}
+
+.hero__img {
+	width: 100%;
+	display: block;
+}
