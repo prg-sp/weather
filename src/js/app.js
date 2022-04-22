@@ -3,88 +3,75 @@ import UI from './ui';
 import Storage from './storage';
 import Weather from './weather';
 
-const hero = document.querySelector('.hero__img');
-const btn = document.getElementById('btn');
-const container = document.querySelector('.container');
+const changeLoc = document.getElementById('btn');
+const modal = document.querySelector('#modal');
 
 let ui = new UI();
 let storage = new Storage();
-let weather = new Weather();
+
+const city = storage.getLocation().city;
+const country = storage.getLocation().country;
+
+let weather = new Weather(city, country);
 
 function init() {
+	showAll(city, country);
 	listeners();
-
-	// ui.city.innerHTML = localStorage.getItem('city');
-	// ui.country.innerHTML = localStorage.getItem('country');
-	showAll();
 }
 
 function listeners() {
-	btn.addEventListener('click', () => {
+	//go to form in order to change city
+	changeLoc.addEventListener('click', () => {
 		ui.modal();
 	});
 
-	container.addEventListener('click', (e) => {
-		if (e.target.classList.contains('btn-danger')) {
-			ui.closeModal();
+	//while in form click to change city
+	modal.addEventListener('click', (e) => {
+		e.preventDefault();
+		if (e.target.classList.contains('btn--change')) {
+			const city = document.getElementById('ch-city').value;
+			const country = document.getElementById('ch-country').value;
+
+			weather.changeCity(city, country);
+			showAll(city, country);
 		}
 	});
 
-	container.addEventListener('keyup', (e) => {
+	//esc from with mouse click on 'x' button
+	modal.addEventListener('click', (e) => {
+		if (e.target.classList.contains('btn--close')) {
+			ui.closeModal();
+			ui.removeAlert();
+		}
+	});
+
+	//esc form with 'esc' key
+	document.addEventListener('keyup', (e) => {
 		if (e.keyCode == '27') {
 			ui.closeModal();
-		}
-	});
-
-	container.addEventListener('click', (e) => {
-		e.preventDefault();
-		if (e.target.classList.contains('btn-ch-val')) {
-			let change_city = document.getElementById('ch-city');
-			let change_country = document.getElementById('ch-country');
-			let city = document.getElementById('w-city');
-			let country = document.getElementById('w-country');
-
-			let s1 = change_city.value;
-			let s2 = change_country.value;
-
-			storage.setVal(s1, s2);
-			ui.clearInput();
-			ui.city.innerHTML = storage.getVal('city');
-			ui.country.innerHTML = storage.getVal('country');
-			console.log(`Po paieskos paketimo: `);
-			console.log(localStorage);
-			ui.closeModal();
-			showAll();
+			ui.removeAlert();
 		}
 	});
 }
 
-function showAll() {
-	console.log(`Fetch:`);
-	console.log(localStorage);
-	let city = localStorage.getItem('city');
-	let country = localStorage.getItem('country');
-	console.log(city);
-	console.log(country);
+function showAll(city, country) {
+	if (city == '') return ui.alert("City can't be empty!");
 
 	weather
-		.get(city, country)
+		.get()
 		.then((data) => {
-			console.log(data);
-			if (data.cod == '404') {
+			if (data.cod != '200') {
 				ui.alert(data.message);
-			} else {
-				ui.removeAlert();
-				ui.showCity(data);
-				ui.showCountry(data);
-				ui.showCelcius(data);
-				ui.showHumi(data);
-				ui.showDesc(data);
-				ui.showIcon(data);
-				storage.setVal(data.name, data.sys.country);
+				ui.clearInput();
+				return;
 			}
+
+			storage.setLocation(city, country);
+			ui.closeModal();
+			ui.removeAlert();
+			ui.paint(data);
 		})
-		.catch((err) => console.log(err));
+		.catch((err) => console.error(err));
 }
 
 document.addEventListener('DOMContentLoaded', init);

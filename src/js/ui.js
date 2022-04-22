@@ -1,5 +1,4 @@
-import walkingDead from '../assets/fear-1.png';
-import ruduo from '../assets/back-3.jpg';
+import toCelcius from './utils';
 
 export default class UI {
 	constructor() {
@@ -7,127 +6,109 @@ export default class UI {
 		this.country = document.getElementById('w-country');
 		this.celcius = document.getElementById('w-celcius');
 		this.humi = document.getElementById('w-humidity');
+		this.wind = document.getElementById('w-wind');
 		this.desc = document.getElementById('w-description');
 		this.img = document.getElementById('w-img');
-		this.forma = document.querySelector('.container form');
-		this.change_city = document.getElementById('ch-city');
-		this.change_country = document.getElementById('ch-country');
-		this.delInput = document.querySelectorAll('.data-clear');
+		this.count = 0;
 	}
 
-	showCity(data) {
-		let output = `
-${data.name}
-
-		`;
-		this.city.innerHTML = output;
-	}
-
-	showCountry(data) {
-		let output = `
-${data.sys.country}
-
-		`;
-		this.country.innerHTML = output;
-	}
-
-	showCelcius(data) {
-		let output = `
-${data.main.temp}
-
-		`;
-		this.celcius.innerHTML = output;
-	}
-
-	showHumi(data) {
-		let output = `
-${data.main.humidity}
-
-		`;
-		this.humi.innerHTML = output;
-	}
-
-	showDesc(data) {
-		let output = `
-${data.weather[0].description}
-
-		`;
-		this.desc.innerHTML = output;
+	paint(data) {
+		let celcius = toCelcius(data.main.temp);
+		this.city.textContent = data.name;
+		this.country.textContent = data.sys.country;
+		this.celcius.textContent = celcius;
+		this.wind.textContent = data.wind.speed;
+		this.humi.textContent = data.main.humidity;
+		this.desc.textContent = data.weather[0].description;
+		this.img.setAttribute(
+			'src',
+			`http://openweathermap.org/img/wn/${data.weather[0].icon}.png`,
+		);
 	}
 
 	clearInput() {
-		this.delInput.forEach((el) => {
+		const delInput = document.querySelectorAll('.data-clear');
+
+		delInput.forEach((el) => {
 			el.value = '';
 		});
 	}
 
 	modal() {
-		const container = document.querySelector('.container');
+		const modalContainer = document.querySelector('#modal');
 		const modal = document.createElement('div');
-		modal.className = 'bg-light p-3';
-		modal.style.cssText =
-			'opacity:.9;width:100vw;height:100vh;top:0;left:0;position:fixed;display:flex;align-items:center;justify-content:center';
+
+		modal.className = 'close-modal';
+
 		let output = `
-			<button id='close' class="btn btn-danger m-3" style='position:absolute;right:0;top:0'>X</button>
-			<form>
-				<div class="form-group">
+			<form class='form'>
+				<div class="form__group">
 					<input
 						type="text"
-						name=""
+						name="city"
 						id="ch-city"
-						class="data-clear"
+						class="form__input data-clear"
 						placeholder="new city"
 					/>
 				</div>
-				<div class="form-group">
+				<div class="form__group">
 					<input
 						type="text"
-						name=""
+						name="country"
 						id="ch-country"
-						class="data-clear"
-						placeholder="new country"
+						class="form__input data-clear"
+						placeholder="new country (optional)"
 					/>
 				</div>
-				<div class="form-group">
-					<input id='change-value' class="btn-ch-val btn btn-primary" type="submit" value="change" />
-				</div>
+				<button class='btn btn--change'>Change</button>
+				<button class='btn btn--close'>X</button>
 			</form>
 `;
 		modal.innerHTML = output;
-		container.append(modal);
+		modalContainer.append(modal);
 	}
 
 	closeModal() {
-		const container = document.querySelector('.container');
-		container.lastElementChild.remove();
-	}
-
-	showIcon(data) {
-		let icon = data.weather[0].description;
-		if (icon == 'clear sky') {
-			this.img.src = walkingDead;
-		} else {
-			this.img.src = ruduo;
+		const modalContainer = document.querySelector('#modal');
+		if (modalContainer.firstElementChild) {
+			modalContainer.firstElementChild.remove();
 		}
 	}
 
-	alert(msg) {
-		let alert = document.querySelector('.alert');
-		let elem = document.createElement('div');
-		elem.className = 'container p-3 bg-dark';
-		elem.style.cssText = 'position:fixed;color:white;top:20%;left:20%';
-		let output = `
-				${msg}...
-				Mhm...nera tokios info. Bandyk dar karta!
+	alert(msg, cls) {
+		const alert = document.querySelector('.alert');
+		const elem = document.createElement('div');
+		const randTop = Math.floor(Math.random() * 10);
+		const randLeft = Math.floor(Math.random() * 10);
+		this.count++;
+
+		elem.className = `alerm`;
+		elem.style.cssText = `
+				top:${randTop}%;
+				left:4${randLeft}%;
 			`;
-		elem.innerHTML = output;
+
+		let output = `
+				${msg} ... \n Unluckiness level: ${this.count} \n
+			`;
+		elem.textContent = output;
 		alert.append(elem);
+
+		setTimeout(() => {
+			this.removeAlertButOne();
+			this.count = 0;
+		}, 2000);
+	}
+
+	removeAlertButOne() {
+		const alerm = document.querySelectorAll('.alerm');
+		alerm.forEach((x) => (x.nextSibling ? x.remove() : x));
 	}
 
 	removeAlert() {
-		let alert = document.querySelector('.alert');
-		if (alert.firstElementChild) {
-			alert.firstElementChild.remove();
-		}
+		const alerm = document.querySelectorAll('.alerm');
+		this.count = 0;
+
+		alerm.forEach((x) => x.remove());
 	}
 }

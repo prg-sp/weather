@@ -1,8 +1,284 @@
-.hero {
-	width: 100px;
+/* VARIABLES */
+:root {
+	--clr-neutral-light: #f9f9f9;
+	--clr-neutral-dark: #939393;
+
+	--clr-primary-200: #6c97d4;
+	--clr-primary-400: #32649d;
+
+	--clr-alert: #d368a5;
+	--clr-success: #dba11c;
+
+	--ff-primary: 'Lato', sans-serif;
 }
 
-.hero__img {
+/* RESET */
+* {
+	margin: 0;
+	padding: 0;
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: inherit;
+}
+
+html {
+	font-size: 62.5%; /* 16px=100%; 10px=62,5% */
+}
+
+/* TYPOGRAPHY */
+body {
+	font-family: var(--ff-primary);
+	font-size: 1.6rem;
+	font-weight: 700;
+	line-height: 1.6;
+	box-sizing: border-box;
+	color: var(--clr-neutral-dark);
+}
+
+h1,
+h2,
+h3 {
+	font-family: var(--font-hero);
+	font-weight: 900;
+	line-height: 1.4;
+}
+
+h1 {
+	font-size: 5rem;
+}
+
+h2 {
+	font-size: 6.5rem;
+}
+
+h3 {
+	font-size: 2.5rem;
+}
+
+button {
+	font-size: 2rem;
+}
+
+/* CORE/BASE/UTILITIES:*/
+img {
 	width: 100%;
 	display: block;
+}
+
+.border {
+	display: flex;
+}
+
+.flex-itim {
+	flex: 0 0 auto;
+}
+
+.container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+}
+
+/* COMPONENTS:*/
+/* - buttons */
+.btn {
+	padding: 1rem 2rem;
+	border: none;
+	border-radius: 0.3rem;
+	background: var(--clr-primary-400);
+	color: var(--clr-neutral-light);
+	cursor: pointer;
+	box-shadow: 0 10px 20px rgb(0, 0, 0, 0.2);
+}
+
+.btn:active {
+	transform: translateY(0.1rem);
+	box-shadow: 0 5px 10px rgb(0, 0, 0, 0.2);
+}
+
+.btn--primary {
+	margin: 2rem;
+}
+
+.btn--primary:hover {
+	opacity: 0.8;
+}
+
+.btn--change {
+	background: var(--clr-primary-200);
+	margin-left: 1rem;
+	margin-right: 1rem;
+}
+
+.btn--change:hover {
+	opacity: 0.8;
+}
+
+.btn--close {
+	position: absolute;
+	font-weight: bold;
+	top: 0.1rem;
+	right: 0;
+	font-size: 3rem;
+	padding: 1rem 1.5rem;
+	box-shadow: none;
+	background: none;
+}
+
+.btn--close:active {
+	transform: none;
+	box-shadow: none;
+}
+
+.btn--close:hover {
+	opacity: 0.8;
+}
+
+.alerm {
+	background: var(--clr-neutral-light);
+	padding: 1rem;
+	border: 0.4rem solid var(--clr-alert);
+	border-radius: 0.3rem;
+	color: var(--clr-alert);
+	position: absolute;
+	width: 70%;
+	z-index: 33;
+	transform: translateX(-50%);
+}
+
+.success {
+	background: var(--clr-primary-200);
+	padding: 2rem;
+	border: 0.4rem solid var(--clr-success);
+	border-radius: 2rem;
+	color: var(--clr-success);
+}
+
+/* - card */
+.card {
+	background: var(--clr-neutral-light);
+	width: 35rem;
+	border-radius: 0.3rem;
+	text-align: center;
+	position: relative;
+	box-shadow: 0 10px 20px rgb(0, 0, 0, 0.2);
+}
+
+.card__header {
+	padding: 8rem 3rem;
+	color: var(--clr-neutral-light);
+	width: 100%;
+	height: 60%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	background-image: linear-gradient(
+			to right top,
+			rgba(108, 151, 212, 0.8),
+			rgba(50, 100, 157, 0.8)
+		),
+		url(../src/assets/wolfgang-hasselmann-bR_-gllg7Bs-unsplash.jpg);
+	background-size: cover;
+	border-radius: 0.3rem 0.3rem 0 0;
+	position: relative;
+}
+
+.card__header-celcius::after {
+	content: '\00b0';
+	position: absolute;
+	padding-left: 1rem;
+}
+
+#w-country {
+	position: absolute;
+	top: 0;
+	right: 1.5rem;
+}
+
+.card__body-header {
+	position: absolute;
+	display: flex;
+	width: 100%;
+	bottom: 100%;
+	left: 0;
+}
+
+.card__body-header > div {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+	align-items: center;
+	color: var(--clr-neutral-light);
+	flex: 1;
+}
+
+.card__body {
+	display: flex;
+	position: relative;
+}
+
+.card__body-info {
+	padding: 1rem 0.5rem;
+	flex: 1;
+	align-self: center;
+	margin: 2rem 0 0;
+}
+
+.card__body-info + .card__body-info {
+	border-left: 1px solid var(--clr-neutral-dark);
+	opacity: 0.8;
+}
+
+.card__logo {
+	width: 3rem;
+}
+
+/* - form (custom)*/
+.form {
+	position: absolute;
+	background: linear-gradient(
+		to right top,
+		var(--clr-primary-200),
+		var(--clr-primary-400)
+	);
+	border-radius: 0.3rem;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	width: 35rem;
+}
+
+.form__group {
+	margin-bottom: 1rem;
+	padding: 0 1rem;
+	width: 85%;
+}
+
+.form__input {
+	margin: 0;
+	line-height: 0;
+	font-size: 2rem;
+	border: 0.5rem solid var(--clr-primary-200);
+	border-radius: 0.3rem;
+	padding: 1rem 2rem;
+	opacity: 0.8;
+	width: 100%;
+}
+
+.form__input:focus {
+	outline: 0.3rem solid var(--clr-primary-400);
+}
+
+.form__input:focus::placeholder {
+	color: transparent;
 }

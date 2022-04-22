@@ -1,14 +1,32 @@
 export default class Storage {
-	setVal(name, country) {
-		localStorage.setItem('city', name);
+	constructor() {
+		this.city;
+		this.country;
+		this.defaultCity = 'Juodkrante';
+		this.defaultCountry = 'LT';
+	}
+
+	getLocation() {
+		if (localStorage.getItem('city') === null) {
+			this.city = this.defaultCity;
+		} else {
+			this.city = localStorage.getItem('city');
+		}
+
+		if (localStorage.getItem('country') === null) {
+			this.country = this.defaultCountry;
+		} else {
+			this.country = localStorage.getItem('country');
+		}
+
+		return {
+			city: this.city,
+			country: this.coutnry,
+		};
+	}
+
+	setLocation(city, country) {
+		localStorage.setItem('city', city);
 		localStorage.setItem('country', country);
-	}
-
-	getVal(key) {
-		localStorage.getItem(key);
-	}
-
-	clearAllVal() {
-		localStorage.clear();
 	}
 }
