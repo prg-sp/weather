@@ -1,2 +1,5 @@
 node_modules
 info
+.env
+public
+src/assets

@@ -6,21 +6,19 @@ const postcssPresetEnv = require('postcss-preset-env');
 module.exports = merge(common, {
 	mode: 'development',
 
-	// parodys erroro eilute consolej
-	// restartina dev serveri stabdo
 	devtool: 'source-map',
 
 	//dev server
 	devServer: {
 		static: {
-			directory: path.join(__dirname, 'src')
+			directory: path.join(__dirname, 'src'),
 		},
 		liveReload: true,
 		compress: true,
 		port: 3000,
 		open: true,
 		hot: true,
-		historyApiFallback: true
+		historyApiFallback: true,
 	},
 
 	module: {
@@ -37,29 +35,14 @@ module.exports = merge(common, {
 								plugins: [
 									postcssPresetEnv({
 										browsers: 'last 2 versions',
-										autoprefixer: { grid: true }
-									})
-								]
-							}
-						}
-					}
-					// { loader: 'sass-loader' }
-				]
-			}
-
-			// css/scss senas
-			// {
-			// 	test: /\.s[ac]ss$/i,
-			// 	use: [
-			// 		// Creates `style` nodes from JS strings
-			// 		'style-loader',
-			// 		// Translates CSS into CommonJS
-			// 		'css-loader',
-			// 'postcss-loader',
-			// Compiles Sass to CSS
-			// 'sass-loader'
-			// ]
-			// }
-		]
-	}
+										autoprefixer: { grid: true },
+									}),
+								],
+							},
+						},
+					},
+				],
+			},
+		],
+	},
 });

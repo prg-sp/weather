@@ -2,7 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-	entry: { atas: './src/js/app.js' },
+	entry: { skriptas: './src/js/app.js' },
 
 	output: {
 		path: path.resolve(__dirname, 'public'),

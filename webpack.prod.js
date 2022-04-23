@@ -15,15 +15,6 @@ module.exports = merge(common, {
 
 	module: {
 		rules: [
-			//babel compile
-			// {
-			// 	test: /.jsx?$/,
-			// 	exclude: /node_modules/,
-			// 	use: {
-			// 		loader: 'babel-loader',
-			// 		options: { presets: ['@babel/preset-env'] }
-			// }
-			// },
 			{
 				test: /\.css$/,
 				use: [
@@ -35,36 +26,21 @@ module.exports = merge(common, {
 							postcssOptions: {
 								plugins: [
 									postcssPresetEnv({
-										//priklausomai kokie nustatymai cia nurodyta, tada ir bus prefixai
 										browsers: 'last 2 versions',
-										autoprefixer: { grid: true }
-									})
-								]
-							}
-						}
-					}
-					// { loader: 'sass-loader' }
-				]
-			}
-		]
+										autoprefixer: { grid: true },
+									}),
+								],
+							},
+						},
+					},
+				],
+			},
+		],
 	},
 
 	optimization: {
-		minimizer: [
-			new OptimizeCssAssetsPlugin(),
-			new TerserPlugin()
-			// new HtmlWebpackPlugin({
-			// 	template: './src/template.html',
-			// 	minify: {
-			// 		removeAttributeQuotes: true,
-			// 		collapseWhitespace: true,
-			// 		removeComments: true
-			// 	}
-			// })
-		]
+		minimizer: [new OptimizeCssAssetsPlugin(), new TerserPlugin()],
 	},
 
-	plugins: [
-		new MiniCssExtractPlugin({ filename: 'kra.[name].[contenthash].css' })
-	]
+	plugins: [new MiniCssExtractPlugin({ filename: 'main.[contenthash].css' })],
 });

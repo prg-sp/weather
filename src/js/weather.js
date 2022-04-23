@@ -1,15 +1,13 @@
 export default class Weather {
 	constructor(city, country) {
-		this.client_apia = 'put_your_own_thing';
 		this.city = city;
 		this.country = country;
 	}
 
 	async get() {
-		const response = await fetch(
-			`http://api.openweathermap.org/data/2.5/weather?q=${this.city},${this.country}&APPID=${this.client_apia}`,
-		);
-		const respData = response.json();
+		// padarai 'endpoint't.y.: vietoj weather ir url ir localthost url' ,apdarai : "GET /foo-weather" endpoint
+		const response = await fetch(`/orai/${this.city},${this.country}`);
+		const respData = await response.json();
 		return respData;
 	}
 
