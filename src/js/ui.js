@@ -111,4 +111,19 @@ export default class UI {
 
 		alerm.forEach((x) => x.remove());
 	}
+
+	showSpinner() {
+		const spinner = document.getElementById('spinner');
+		// spinner.setAttribute('src', 'loading.gif');
+		spinner.removeAttribute('hidden');
+		console.log('spinner on');
+	}
+
+	hideSpinner() {
+		const spinner = document.getElementById('spinner');
+
+		// spinner.removeAttribute('src');
+		spinner.setAttribute('hidden', '');
+		console.log('spinner off');
+	}
 }

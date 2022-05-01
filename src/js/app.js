@@ -57,14 +57,20 @@ function listeners() {
 function showAll(city, country) {
 	if (city == '') return ui.alert("City can't be empty!");
 
+	//spiner
+	ui.showSpinner();
+
 	weather
 		.get()
 		.then((data) => {
 			if (data.cod != '200') {
+				ui.hideSpinner();
+
 				ui.alert(data.message);
 				ui.clearInput();
 				return;
 			}
+			ui.hideSpinner();
 
 			storage.setLocation(city, country);
 			ui.closeModal();
